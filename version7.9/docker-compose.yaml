@@ -1,0 +1,36 @@
+version: "3"
+services:
+  sonarqubev7:
+    image: sonarqube:7.9.2-community
+    hostname: sonarqubev7
+    container_name: sonarqubev7
+    depends_on:
+      - dbv7
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://dbv7:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - v7sonarqube_data:/opt/sonarqube/data
+      - v7sonarqube_extensions:/opt/sonarqube/extensions
+      - v7sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+  dbv7:
+    image: postgres:13
+    hostname: postgresql
+    container_name: postgresqlv7
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonar
+    volumes:
+      - v7postgresql:/var/lib/postgresql
+      - v7postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  v7sonarqube_data:
+  v7sonarqube_extensions:
+  v7sonarqube_logs:
+  v7postgresql:
+  v7postgresql_data:
